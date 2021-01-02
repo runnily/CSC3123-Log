@@ -87,7 +87,10 @@
  */
         function delete()
         {
-            R::trashAll(R::find('upload', 'note_id', [$this->bean->id]));
+            $trash = R::find('upload', 'note_id', [$this->bean->id]);
+            if ($trash) {
+                R::trashAll($trash);
+            }
         }
     }
 ?>

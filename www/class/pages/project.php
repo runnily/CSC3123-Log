@@ -86,7 +86,7 @@ trait notesAndUsers {
             {
                 $context->local()->message(local::MESSAGE, "User deleted");
             } else {
-                $context->local()->message(local::ERROR, "Ensure there is more than 1 user");
+                $context->local()->message(local::ERROR, "Ensure there is more than 1 admin");
             }
         }
     }
@@ -125,7 +125,7 @@ trait notesAndUsers {
         public function handle(Context $context)
         {
             $project = $context->rest()[0];
-            $context->local()->message(local::MESSAGE, R::find('upload'));
+            $context->local()->message(local::MESSAGE, R::findOne('manage', 'id', [12]));
             $prj = R::findOne('project', 'id = ?', [$project] );
             if ($prj) 
             { 

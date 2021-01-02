@@ -69,14 +69,30 @@
  */
         function deleteUser($user_id, $project_id = '') : bool
         {
-            if (R::count('manage', 'project_id = ?', [$this->bean->id]) > 1) // ensures there is more than 1 user
+            // ensures there is more than 1 user and they are admin
+            // admin can only delete user
+            if (R::count('manage', 'project_id = ?', [$this->bean->id]) > 1 && $this->isAdmin(Context::getinstance()))
             {
+                $numAdmins = R::count('manage', 'admin = ? AND project_id = ?', [TRUE, $this->bean->id] );
                 $trash = R::findOne('manage', 'project_id = ? AND u_id = ?', [ $project_id, $user_id]);
-                if ($trash)  // ensures user manages project
-                {
-                    R::trash($trash);
-                    return TRUE;
-                }
+
+                if ($trash) { // if user exists (is managing this current project)
+                    
+                    // check if thier admin and number of admins is greater than one
+                    if ($trash->admin && $numAdmins > 1)  
+                    {
+                        R::trash($trash);
+                        return TRUE;
+
+                    } else  // if not
+                    {
+                        if (!$trash->admin) // check if user is NOT an admin
+                        {
+                            R::trash($trash); // delete them
+                            return TRUE;
+                        }
+                    }
+                }     
             }
             return FALSE;
         }
@@ -87,7 +103,7 @@
         {
             if (R::count('manage', 'project_id = ?', [$this->bean->id]) <= 0)
             {
-                return TRUE; // If no one is managing it then it can be deleted
+                return TRUE; // If no one is managing it then it can be changed by anyone
             }
             $mng = R::findOne('manage', 'project_id = ? AND u_id = ?', [$this->bean->id, $context->user()->id]);
             return $mng->admin;
@@ -116,14 +132,13 @@
         function delete() 
         {
             $context = Context::getinstance();
-            if (!($this->bean->isAdmin($context))) 
+            $numAdmins = R::count('manage', 'admin = ? AND project_id = ?', [TRUE, $this->bean->id] );
+
+            if (!($this->bean->isAdmin($context)) && $numAdmins > 0) 
             {
                 throw new \Framework\Exception\Forbidden('User is not admin!');
             }
-            if (R::count('manage', 'project_id = ?', [$this->bean->id]) == 1)
-            {
-                throw new \Framework\Exception\Forbidden('Only one user!');
-            }
+        
             $trash = R::find('note', 'project_id = ?', [$this->bean->id]);
             if ($trash) 
             {

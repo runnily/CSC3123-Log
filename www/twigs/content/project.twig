@@ -51,7 +51,7 @@
                 </div>
                 <div class="modal-body">
                     {{f.startform({method: 'post', multi: TRUE, class:'form-group'})}}
-                        {{f.text({label: 'Title', id: 'title', name: 'title', ph: 'Input title here' })}}
+                        {{f.text({label: 'Title', id: 'title', name: 'title', ph: 'Input title here', required: 'true' })}}
                         {{f.text({label: 'Summary', id: 'summary', name: 'summary', ph: 'Input summary here' })}}
                         {{f.file({id: 'f0', name: 'myfile', label: 'File'})}}
                         {{f.number({min: '0', name: 'time', label: 'Minutes', ph: 'Minutes spent'})}}
