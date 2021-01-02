@@ -40,7 +40,7 @@ trait notesAndUsers {
     //for removing a note
     function removeNote(Context $context) 
     {
-        if(count($context->rest()) == 4 && $context->rest()[2] == 'delete' && $context->rest()[1] = 'note') 
+        if(count($context->rest()) == 4 && $context->rest()[2] == 'delete' && $context->rest()[1] == 'note') 
             {
             $trash = R::findOne('note', 'project_id = ? AND id = ?', [ $context->rest()[0], $context->rest()[3] ] );
             if ($trash) 
@@ -78,14 +78,16 @@ trait notesAndUsers {
     //for deleting a user
     function removeUser(Context $context, $prj) 
     {
-        if(count($context->rest()) == 4 && $context->rest()[2] == 'delete' && $context->rest()[1] = 'user' )
+        if(count($context->rest()) == 4 && $context->rest()[2] == 'delete' && $context->rest()[1] == 'user' )
         {
             $user_id = $context->rest()[3];
             $project_id = $context->rest()[0];
             if ($prj->deleteUser($user_id,$project_id)) 
             {
                 $context->local()->message(local::MESSAGE, "User deleted");
-            } 
+            } else {
+                $context->local()->message(local::ERROR, "Ensure there is more than 1 user");
+            }
         }
     }
     
@@ -101,7 +103,7 @@ trait notesAndUsers {
             }
         }catch (\Exception $e) 
         {
-            $context->local()->message(local::MESSAGE, "You are not an admin");
+            $context->local()->message(local::ERROR, "Something went wrong! Ensure you are an admin to perform this action or there is more than 1 user contributing to this project");
         }
     }
 }
@@ -123,7 +125,7 @@ trait notesAndUsers {
         public function handle(Context $context)
         {
             $project = $context->rest()[0];
-
+            $context->local()->message(local::MESSAGE, R::find('upload'));
             $prj = R::findOne('project', 'id = ?', [$project] );
             if ($prj) 
             { 

@@ -32,7 +32,13 @@
  */
         public function canaccess($user, string $op = 'r') : bool
         {
-            return $this->bean->user->equals($user) || $user->isadmin();
+            try 
+            {
+                return $this->bean->user->equals($user) || $user->isadmin();
+            } catch (\Throwable $t ) 
+            {
+                return TRUE; // if the is not user, or user admin assoicated to object
+            }
         }
 /**
  * Hook for adding extra data to a file save.
@@ -126,7 +132,10 @@
                 throw new \Framework\Exception\Forbidden('Permission Denied');
             }
 // Now delete the associated file
-            unlink($context->local()->basedir().$this->bean->fname);
+            $fname = $context->local()->basedir().$this->bean->fname;
+            if (is_file($fname) && file_exists($fname)) {
+                unlink($context->local()->basedir().$this->bean->fname);
+            }
 /* **** Put any cleanup code of yours after this line **** */
             /*
              * Your code goes here

@@ -67,13 +67,16 @@
  *  @param string       $project_id     This takes in the project id
  *  @return  bool       Will return true when user is successfully deleted else false
  */
-        function deleteUser($user_id, $project_id) : bool
+        function deleteUser($user_id, $project_id = '') : bool
         {
-            $trash = R::findOne('manage', 'project_id = ? AND u_id = ?', [ $project_id, $user_id]);
-            if ($trash) 
+            if (R::count('manage', 'project_id = ?', [$this->bean->id]) > 1) // ensures there is more than 1 user
             {
-                R::trash($trash);
-                return TRUE;
+                $trash = R::findOne('manage', 'project_id = ? AND u_id = ?', [ $project_id, $user_id]);
+                if ($trash)  // ensures user manages project
+                {
+                    R::trash($trash);
+                    return TRUE;
+                }
             }
             return FALSE;
         }
@@ -82,8 +85,11 @@
  */
         function isAdmin(Context $context) : bool 
         {
-            
-            $mng = R::findOne('manasge', 'project_id = ? AND u_id = ?', [$this->bean->id, $context->user()->id]);
+            if (R::count('manage', 'project_id = ?', [$this->bean->id]) <= 0)
+            {
+                return TRUE; // If no one is managing it then it can be deleted
+            }
+            $mng = R::findOne('manage', 'project_id = ? AND u_id = ?', [$this->bean->id, $context->user()->id]);
             return $mng->admin;
         }
 
@@ -113,6 +119,10 @@
             if (!($this->bean->isAdmin($context))) 
             {
                 throw new \Framework\Exception\Forbidden('User is not admin!');
+            }
+            if (R::count('manage', 'project_id = ?', [$this->bean->id]) == 1)
+            {
+                throw new \Framework\Exception\Forbidden('Only one user!');
             }
             $trash = R::find('note', 'project_id = ?', [$this->bean->id]);
             if ($trash) 
