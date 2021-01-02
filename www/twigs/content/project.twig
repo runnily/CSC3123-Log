@@ -1,0 +1,174 @@
+{% extends '@content/page.twig' %}
+
+
+{% block meta %}
+{# <meta> for things like keywords etc.#}
+{% endblock meta %}
+
+{% block type %}
+{# <link> for webfonts #}
+{% endblock type %}
+
+{% block css %}
+{# <link> for any other CSS files you need #}
+{% endblock css %}
+
+
+
+{% block scripts %}
+{# <script src=""></script> for any other JS files you need #}
+{% endblock scripts %}
+
+{% block setup %}
+{# Any javascript you need that is NOT run on load goes in this block. ***NB you don't need <script></script> tags here*** #}
+{% endblock setup %}
+
+{% block onload %}
+{# Any javascript you need that MUST run on load goes in this block. ***NB you don't need <script></script> tags here*** #}
+{% endblock onload %}
+
+
+{% block header %}
+    <div class="d-flex w-100 justify-content-between">
+        <article>
+            <h1 class="text-center">{{projectName}}</h1>
+        </article>
+
+        <a class="text-white bg-danger border-primary rounded m-0 p-3" href="{{deletePrj}}">
+            <i class="fas fa-trash-alt"></i> delete
+        </a>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    {% include '@util/message.twig' %}
+    {% import '@util/formmacro.twig' as f %}
+    <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#notes">Notes</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#users">Users</a></li>
+    </ul>
+
+    <div class="modal fade" id="add-note" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Note</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{f.startform({method: 'post', multi: TRUE, class:'form-group'})}}
+                        {{f.text({label: 'Title', id: 'title', name: 'title', ph: 'Input title here' })}}
+                        {{f.text({label: 'Summary', id: 'summary', name: 'summary', ph: 'Input summary here' })}}
+                        {{f.file({id: 'f0', name: 'myfile', label: 'File'})}}
+                        {{f.number({min: '0', name: 'time', label: 'Minutes', ph: 'Minutes spent'})}}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                {{f.submit({value: 'Add'})}}
+                        </div>
+                    {{f.endform()}}
+                </div>
+            </div> 
+        </div>
+    </div>
+        
+    <div class="modal fade" id="add-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add user</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{f.startform({method: 'post', multi: TRUE})}}
+                        {{f.text({label: 'Username', id: 'username', name: 'username', ph: 'username' })}}
+                        {{f.checkbox({class: 'cbc', labels: ['Make Admin'], ids: ['admin'], names: ['admin'], values: ['TRUE']})}}
+                        <br/>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            {{f.submit({value: 'Add'})}}
+                        </div>
+                    {{f.endform()}}
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <section class="tab-content">
+        <div id="notes" class="col-md-8 tab-pane fade show active">
+            <br/>
+            <button type="button" class="text-white btn bg-secondary " data-toggle="modal" data-target="#add-note"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+                New note
+            </button>
+        
+            <ul class="notes mt-3 mr-0">
+                {% for note in notes %}
+                    <li class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <a href="{{base}}/note/{{note.id}}/project/{{project_id}}" >
+                                <i class="far fa-sticky-note"></i>
+                                {{note.title}}
+                            </a> 
+                            <a href="{{currentNote}}/delete/{{note.id}}">
+                                <i class="fas fa-trash-alt"></i>
+                                <small> delete </small>
+                            </a>
+                        </div>
+                        <p class="mb-1">{{note.summary}}</p>  
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <article id="users" class="col-md-8 tab-pane fade">
+            <br/>
+                <button type="button" class="text-white btn bg-secondary" data-toggle="modal" data-target="#add-user"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                        Add user
+                </button>
+            <ul class="users mt-3 mr-0">
+                {% for user in users %}
+                    <li class="list-group-item list-group-item-action"> 
+                        <div class="d-flex w-100 justify-content-between">
+                            <a href="{{base}}/profile/{{user.id}}">
+                                <i class="far fa-user"></i> 
+                                {{user.login}} 
+                            </a> 
+                            <span class="custom-control p-2 custom-switch ml-2">
+                                {% if user.admin %}
+                                    <input type="checkbox" checked='True' id="{{user.id}}" class="custom-control-input">
+                                {% else %}
+                                    <input type="checkbox" id="{{user.id}}" class="custom-control-input">
+                                {% endif %}
+                                <label class="custom-control-label" for="{{user.id}}"> Admin </label>
+                            </span>
+                                <a href="{{currentUser}}/delete/{{user.id}}">
+                                <i class="fas fa-trash-alt"></i>
+                                <small> delete </small>
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </article>
+    </section>
+{% endblock main %}
+
+{# uncomment this and delete the footer block below to remove the <footer> tag altogether
+{% block pagefooter %}
+{% endblock pagefooter %}
+#}
+
+{#
+    If you have a standard footer for all (most) pages then put the
+    content in the file twigs/surround/footer.twig. It is included by page.twig by
+    default. You then don't need to have a footer block either.
+#}
+

@@ -1,0 +1,35 @@
+{% set parsley = TRUE %}
+
+{% set schema = 'itemscope="" itemtype="http://schema.org/ContactPage"' %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+	<h1>Contact</h1>
+    </section>
+{% endblock header %}
+
+{% block onload %}
+    $('#cform').parsley()
+{% endblock onload %}
+
+{% block main %}
+    <section class="row">
+        <article class="offset-md-1 col">
+            {% include '@util/message.twig' %}
+            {{f.startform({id: 'cform', method: 'post'})}}
+                {{f.hidden({name: 'details', value: '1'})}}
+                {{f.text({label: 'Subject', id: 'sj', name: 'subject', ph: 'Subject', required: TRUE})}}
+                {{f.textarea({label: 'Message', id: 'sj', name: 'message', ph: 'Message...', rows: 10, required: TRUE})}}
+                {{f.email({label: 'Your Email Address', id: 'ms', name: 'sender', ph: 'Email Address', required: TRUE})}}
+                {{f.submit({value: 'Send'})}}
+            {{f.endform()}}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

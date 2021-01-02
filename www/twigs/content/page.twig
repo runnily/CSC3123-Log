@@ -1,0 +1,62 @@
+{% extends '@util/page.twig' %}
+
+{% block favicons %}
+    {% include '@content/favicons.twig' %}
+{% endblock favicons %}
+
+{% block head %}
+    {% block meta %}
+    {% endblock meta %}
+
+    {% block links %}
+        <link rel="stylesheet" href="{{assets}}/css/base.css">  {# + #}
+    {% endblock links %}
+
+    {% block type %}
+    {% endblock type %}
+
+    {% block css %}
+    {% endblock css %}
+{% endblock head %}
+
+{% block body %}
+    {% block navigation %}
+	{% include '@surround/navbar.twig' %}
+    {% endblock navigation %}
+
+
+    <section>
+        {% block sidebar %}
+            {% include '@surround/sidebar.twig' %}
+        {% endblock sidebar %}
+
+        <div class="main">
+            {% block pageheader %}
+                <header class="row">
+                {% block header %}
+                    {% include '@surround/header.twig' %}
+                {% endblock header %}
+                </header>
+            {% endblock pageheader %}
+            
+            {% block main %}
+            {% endblock main %}
+        </div>
+    <section>
+    
+        
+
+    {% block pagefooter %}
+        <footer class="row">
+        {% block footer %}
+            {% include '@surround/footer.twig' %}
+        {% endblock footer %}
+        </footer>
+    {% endblock pagefooter %}
+
+{% endblock body %}
+
+{% block userscripts %}
+    {% block scripts %}
+    {% endblock scripts %}
+{% endblock userscripts %}

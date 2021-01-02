@@ -1,0 +1,39 @@
+{% set breadcrumbs = [{link: base~'/devel', text: 'Developer'}, {link: base~'/devel/test/', text: 'Test'}, {text: 'Test Page'}] %}
+{% set title = 'The Framework: Test Page' %}
+{% set keywords = 'framework, test' %}
+{% set description = 'A page that tests various features of the Framework' %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/accmacro.twig' as a %}
+
+{% block onload %}
+    $('#nopu').on('click', function(e){
+        $(this).toggleClass('btn-primary').toggleClass('btn-warning');
+    })
+    {{a.caretJS('acc1')}}
+{% endblock onload %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Developer tools</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-10 mb-5">
+            {% include '@util/message.twig' %}
+            {{a.accordion('acc1', [
+                {id: 'form0', title: 'Messaging', file: '@util/message.twig', with: {fwerrmessage: fwerrmessage, fwwarnmessage: fwwarnmessage, fwmessage: fwmessage} },
+                {id: 'form1', title: 'Form Text Macros', file: '@devel/tests/formtext.twig'},
+                {id: 'form2', title: 'Form Other Macros', file: '@devel/tests/formother.twig'},
+                {id: 'modal', title: 'Modals', file: '@devel/tests/modal.twig'},
+            ], TRUE)}}
+        </article>
+    </section>
+    {% include '@devel/tests/modalbody.twig' %}
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

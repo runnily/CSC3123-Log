@@ -1,0 +1,31 @@
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1 class="text-center">Password Reset</h1>
+    </section>
+{% endblock header %}
+
+{% block navigation %}
+{% endblock navigation %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-6 mr-auto mt-5">
+            {% include '@util/message.twig' %}
+            {% if not done %}
+                {{f.startform({action: base ~ '/forgot/', method: 'post', class: 'jumbotron'})}}
+                    {{f.startfset('Send Password Reset Message')}}
+                        {{f.text({id: 'el', label: 'Email', name: 'eorl', ph: 'Your email address', required: TRUE})}}
+                        {{f.submit({value: 'Reset'})}}
+                    {{f.endfset()}}
+                {{f.endform()}}
+            {% endif %}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

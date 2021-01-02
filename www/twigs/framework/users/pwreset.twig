@@ -1,0 +1,39 @@
+{% set parsley = TRUE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+
+{% block onload %}
+    $('#pwform').parsley()
+{% endblock onload %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1 class="text-center">Set Your New Password</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-6 mr-auto mt-5">
+            {% include '@util/message.twig' %}
+            {% if done %}
+                <div class="text-center">
+                    <a class="btn btn-info" href="{{base}}/login/">Login</a>
+                </div>
+            {% else %}
+                {{f.startform({action : base~'/forgot/reset', method: 'post', class: 'jumbotron'})}}
+                    {{f.hidden({name: 'uid', value: pwuser.getID})}}
+                    {{f.hidden({name: 'code', value: code})}}
+                    {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE, parsley: {'equal-to': '#rpw'} })}}
+                    {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, parsley: {'equal-to': '#pw', trigger: 'change'} })}}
+                    {{f.submit({value: 'Set'})}}
+                {{f.endform()}}
+            {% endif %}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

@@ -1,0 +1,77 @@
+{% extends '@content/page.twig' %}
+
+{% block meta %}
+{# <meta> for things like keywords etc.#}
+{% endblock meta %}
+
+{% block css %}
+{# <link> for any other CSS files you need #}
+{% endblock css %}
+
+
+{% block scripts %}
+{# <script src=""></script> for any other JS files you need #}
+{% endblock scripts %}
+
+{% block setup %}
+{# Any javascript you need that is NOT run on load goes in this block. ***NB you don't need <script></script> tags here*** #}
+{% endblock setup %}
+
+{% block header %}
+    <article class="col-md-12">
+        <h1 class="text-center">Edit {{action}}</h1>
+        <h2 class="text-center">{{note.title}}</h2>
+    </article>
+{% endblock header %}
+
+{% block main %}
+    {% include '@util/message.twig' %}
+    <section class="row">
+        <article class="ml-auto col-md-8 mr-auto">
+        <div class="modal-body">
+        {% import '@util/formmacro.twig' as f %}
+        {{f.startform({method: 'post', multi: TRUE})}}
+            {{f.text({label: 'Title', id: 'title', name: 'title', ph: note.title })}}
+            {{f.text({label: 'Summary', id: 'summary', name: 'summary', ph: note.summary })}}
+            <ul>
+            {% for upload in uploads %}
+                {% set type = upload.filename|split('.') %}
+                {% set type = type[type|length - 1] %}
+                <li>
+                    {% if type in [png, gif, tiff, jpg] %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-image" viewBox="0 0 16 16">
+                            <path d="M6.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                            <path d="M14 14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5V14zM4 1a1 1 0 0 0-1 1v10l2.224-2.224a.5.5 0 0 1 .61-.075L8 11l2.157-3.02a.5.5 0 0 1 .76-.063L13 10V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4z"/>
+                        </svg>
+                    {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+                            <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+                            <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                        </svg>
+                    <a href="{{download}}/{{upload.id}}">
+                        {{upload.filename}}
+                    </a>
+                    <a href="{{delete}}/{{upload.id}}">
+                        <small> delete </small>
+                    <a>
+                </li>
+                <br>
+                {% endif %}
+            {% endfor %}
+            </ul>
+            {{f.file({id: 'f0', name: 'myfile', label: 'Upload more files'})}}
+            {{f.number({min: '1', name: 'time', label: 'Time spent (minutes)', ph: note.minutes})}}
+            <div class="modal-footer">
+                <a href="{{base}}/projects"><button type="button" class="btn btn-primary">back</button></a>
+                <button onclick="location.href='http://www.example.com'" type="button">
+                {{f.submit({value: 'Save changes'})}}
+            </div>
+        {{f.endform()}}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block footer %}
+    <article class="col-md-12">
+    </article>
+{% endblock footer %}

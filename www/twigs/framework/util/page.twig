@@ -1,0 +1,115 @@
+<!doctype html>
+<html{% if lang is defined %} lang="{{lang}}"{% endif %}{%if schema is defined %} {{schema|raw}}{% endif %}>
+<head>
+    <meta charset="utf-8"/>
+
+    <title>
+        {% block title %}{% if title is defined %}{{title}}{% else %}{{fwurls.sitename.value|upper}}{% if action != 'home' %} &mdash; {{action}}{% endif %}{% endif %}{% endblock title %}
+    </title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    {% if keywords is defined %}
+        <meta name="keywords" content="{{keywords}}"/>
+    {% endif %}
+
+    {% if description is defined %}
+        <meta name="description" content="{{description}}"/>
+    {% endif %}
+
+    {% import '@util/attrmacro.twig' as h %}
+
+    {% block favicons %}
+        {% include '@content/favicons.twig' %}
+    {% endblock favicons %}
+
+    {% if usebootstrapcss %}
+        <link rel="stylesheet" {{h.urlattr(fwurls.bootcss)}} media="screen,print"/>
+    {% endif %}
+    {% if usevue %}
+        <link rel="stylesheet" {{h.urlattr(fwurls.bootvuecss)}}/>
+    {% endif %}
+    {% if fwurls.facss.type == 'css' %}
+        <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
+    {% endif %}
+    {% if editable %}
+        <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
+    {% endif %}
+    <link rel="stylesheet" href="{{assets}}/css/layout.min.css" media="screen"/>
+
+    {% block head %}
+    {% endblock head %}
+    {% if block('style') is defined %}
+        {% set nonce = security.makeNonce() %}
+        {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
+        <style nonce="{{nonce}}">{{block('style')}}</style>
+    {% endif %}
+    {% if block('criticalCSS') is defined %}
+        {% set nonce = security.makeNonce() %}
+        {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
+        <style nonce="{{nonce}}">{{block('criticalCSS')}}</style>
+    {% endif %}
+
+</head>
+<body lang="{{deflang is defined ? deflang : 'en-GB'}}">
+    {% block body %}
+    {% endblock body %}
+
+    {% if usevue %}
+        <script {{h.urlattr(fwurls.vuejs)}}></script>
+        <script {{h.urlattr(fwurls.bootvuejs)}}></script>
+    {% else %}
+        {% if usejquery %}
+            {% if ajax %}
+                <script {{h.urlattr(fwurls.jquery)}}></script> {# we need everything #}
+            {% else %}
+                <script {{h.urlattr(fwurls.jqueryslim)}}></script>
+            {% endif %}
+        {% endif %}
+        {% if usebootstrapjs or usebootboxjs or fwutils or editable %}  {# editable and bootbox use Bootstrap JS and fwutils uses bootbox #}
+            <script {{h.urlattr(fwurls.popperjs)}}></script>
+            <script {{h.urlattr(fwurls.bootjs)}}></script>
+        {% endif %}
+        {% if usebootbox or fwutils %} {# fwutils uses bootbox #}
+            <script {{h.urlattr(fwurls.bootbox)}}></script>
+        {% endif %}
+        {% if fwutils %}
+            <script {{h.urlattr(fwurls.utiljs)}}></script>
+        {% endif %}
+        {% if parsley %}
+            <script {{h.urlattr(fwurls.parsley)}}></script>
+        {% endif %}
+        {% if editable %}
+            <script {{h.urlattr(fwurls.editable)}}></script>
+        {% endif %}
+        {% if recaptcha %}
+            {% if constant('Config\\Config::RECAPTCHA') == 2 %}
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+            {% elseif constant('Config\\Config::RECAPTCHA') == 3 %}
+                <script src="https://www.google.com/recaptcha/api.js?render={{constant('Config\\Config::RECAPTCHAKEY')}}"</script>
+            {% endif %}
+        {% endif %}
+
+    {% endif %}
+
+    {% if fwurls.facss.type == 'js' %}
+        <script {{h.urlattr(fwurls.facss)}}></script> {# if you are using a font awesome kit #}
+    {% endif %}
+
+    {% block userscripts %}
+    {% endblock userscripts %}
+
+    {% set sjs, ojs = '', context.getons %}
+    {% if block('setup') is defined %}{% set sjs = sjs ~ block('setup')|trim %}{% endif %}
+    {% if block('onload') is defined %}
+        {% set ojs = ojs~block('onload')|trim %}
+        {% if ojs|length > 0 %}{% set ojs = 'document.addEventListener(\'DOMContentLoaded\', function(){'~ojs~'});' %}{% endif %}
+    {% endif %}
+    {% set js = sjs~ojs %}
+    {% if js|length > 0 %}
+        {% set js = "const base = '"~base~"', putorpatch = '" ~ constant('Config\\Config::PUTORPATCH') ~ "';" ~ sjs ~ "\n" ~ ojs %}
+        <script hash="{{context.web.saveCSP('script-src', js)}}">{{js|raw}}</script>
+    {% endif %}
+</body>
+</html>

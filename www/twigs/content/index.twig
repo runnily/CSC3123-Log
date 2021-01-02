@@ -1,0 +1,82 @@
+{% extends '@content/page.twig' %}
+
+{% block onload %}
+    $('#alert').on('click', function(){
+        bootbox.alert('Hi there, This shows projects which have the most contributions. Select projects on the side bar to create a new project')
+    })
+{% endblock onload %}
+
+{% block scripts %}
+    
+{% endblock scripts %}
+
+{% block header %}
+    <article class="col-md-12">
+        <h1 class="text-center">Logger</h1>
+    </article>
+{% endblock header %}
+
+
+{% block main %}
+    <a class="text-white bg-secondary border-primary rounded p-3" href="{{base}}/create/">
+            <i class="fas fa-plus"></i>
+            New project
+    </a>
+    <section class="row mt-5">
+        <article class="col-md-8">
+            {% if context.hasUser %}
+            {% include '@util/message.twig' %}
+                <div>
+                    <dl>
+                        <dt class='mb-2'>
+                            Project contributions
+                        </dt>
+                        {% for pname, prj in projects1 %}
+                            <dd class="percentage percentage-{{prj}}"><span class="text">{{pname}}: {{prj}}%</span></dd>
+                        {% endfor %}
+                    </dl>
+                </div>
+                <aside id="rightbar" class="col">
+                    <a id="alert"><i class="far fa-question-circle"></i></a>
+                </aside>
+                <hr>
+                <div class='mt-5 d-flex flex-row borderCards' >
+                    {% for name, prj in projects2 %}
+                        <div class="card mycards mr-4">
+                            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% set active = 1 %}
+                                    {% for img in prj.uploads %}
+                                            {% if active == 1%}
+                                                <div class="carousel-item active">
+                                                    <img class="d-block w-100 a" src="{{img['fname']}}" alt="{{img['filename']}}">
+                                                </div>
+                                            {% else %}
+                                                <div class="carousel-item">
+                                                        <img class="d-block w-100 a" src="{{img['fname']}}" alt="{{img['filename']}}">
+                                                </div>
+                                            {% endif %}
+                                            {% set active = 0 %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{{base}}/project/{{prj.id}}">{{name}}</a></h5>
+                                <p class="card-text">{{prj.summary}}</p>
+                                <hr>
+                                <a href="{{base}}/project/{{prj.id}}">
+                                    <small> <i class="far fa-sticky-note"></i> {{prj.notes}} notes | <i class="far fa-user"></i> {{prj.users}} users</small> 
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+            <div class="jumbotron">
+                <a href="{{base}}/login">Login</a> to get started!
+            </div>
+            {% endif %}
+        </article>
+    </section>
+
+{% endblock main %}

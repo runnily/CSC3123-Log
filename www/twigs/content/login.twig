@@ -1,0 +1,45 @@
+{% extends '@content/page.twig' %}
+
+{% import '@content/iconmacro.twig' as icon %}
+
+{% block header %}
+    <section class="ml-auto col-md-4 mr-auto mt-5">
+        <h1 class="text-center">Please Log In</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-4 mr-auto">
+            {% include '@util/message.twig' %}
+            <form action="{{base}}/login" method="post" class="jumbotron">
+                <input type="hidden" name="goto" value="{{goto}}"/>
+                <fieldset>
+                    <legend>Login</legend>
+                    <div class="form-group">
+                        <label for="un" class="control-label">User Name</label>
+                        <input type="text" id="un" name="login" placeholder="User Name" class="form-control" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="pw" class="control-label">Password</label>
+                        <input type="password" id="pw" name="password" placeholder="**************" class="form-control" required="required"/>
+                    </div>
+        {#
+                    <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="memo"/> Remember me
+                                </label>
+                            </div>
+        #}
+                    <button class="btn btn-primary" type="submit">{{icon.fa('sign-in-alt')}} Login</button>
+                </fieldset>
+                <p><small><a href="{{base}}/forgot">{{icon.fa('key')}} Lost password?</a></small></p>
+                {% if register %}
+                    <p><small><a href="{{base}}/confirm">{{icon.fa('envelope')}} Confirm email?</a></small></p>
+                    <p>or</p>
+                    <p><a class="btn btn-info btn-sm" href="{{base}}/register">{{icon.fa('pencil-alt')}} Register</a></p>
+                {% endif %}
+            </form>
+        </article>
+    </section>
+{% endblock main %}
