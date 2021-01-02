@@ -52,6 +52,7 @@
                         $mng->admin = TRUE;
                         R::store($mng);
                         R::store($prj);
+                        $context->divert("/");
                         $context->local()->message(Local::MESSAGE, "{$name} Project created!");
                     } else 
                     {

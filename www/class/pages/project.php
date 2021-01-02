@@ -99,9 +99,10 @@ trait notesAndUsers {
             if(count($context->rest()) == 2 && $context->rest()[1] == 'delete')
             {
                 R::trash($prj);
+                $context->divert("/");
                 $context->local()->message(local::MESSAGE, "Project deleted");
             }
-        }catch (\Exception $e) 
+        } catch (\Exception $e) 
         {
             $context->local()->message(local::ERROR, "Something went wrong! Ensure you are an admin to perform this action or there is more than 1 user contributing to this project");
         }
@@ -125,7 +126,6 @@ trait notesAndUsers {
         public function handle(Context $context)
         {
             $project = $context->rest()[0];
-            $context->local()->message(local::MESSAGE, R::findOne('manage', 'id', [12]));
             $prj = R::findOne('project', 'id = ?', [$project] );
             if ($prj) 
             { 
