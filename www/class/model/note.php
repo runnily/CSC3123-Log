@@ -80,5 +80,14 @@
             R::store($this);
             return $added;
         }
+
+/**
+ * This is to ensure when a node is directly calls the delete method in uploads to delete
+ * all the files assoicated with it, on the directory.
+ */
+        function delete()
+        {
+            R::trashAll(R::find('upload', 'note_id', [$this->bean->id]));
+        }
     }
 ?>
