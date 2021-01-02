@@ -76,11 +76,10 @@
  */
         public function downloaded(Context $context) : void
         {
-            /*
-             * Your code goes here
-             */
             $fname = $context->local()->basedir().$this->bean->fname;
             $type = explode('.' , $this->bean->filename); // get the type of file
+            $type = $type[count($type)-1];
+            
             switch ($type) {
                 case "pdf": $ctype="application/pdf"; break;
                 case "exe": $ctype="application/octet-stream"; break;

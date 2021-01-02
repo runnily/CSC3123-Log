@@ -127,7 +127,8 @@ trait notesAndUsers {
             $prj = R::findOne('project', 'id = ?', [$project] );
             if ($prj) 
             { 
-                $context->local()->addval('projectName', $prj->pname); 
+                $context->local()->addval('projectName', $prj->pname);
+                $context->local()->addval('projectSummary', $prj->summary); 
                 $context->local()->addval("exits", 1); 
                 $notes = R::find('note', 'project_id = ?', [$project] );
                 $context->local()->addval("deletePrj", "/project/{$project}/delete"); 

@@ -26,8 +26,8 @@ body section .main {
   min-height: 80vh;
 }
 body .borderCards {
-  direction: ltr;
   overflow: scroll;
+  position: relative;
   max-height: 25rem;
   padding: 0;
 }
@@ -35,7 +35,7 @@ body .borderCards .mycards {
   width: 17rem;
   max-height: 25rem;
   position: relative;
-  direction: ltr;
+  overflow: auto;
 }
 body .text {
   font-weight: 600;

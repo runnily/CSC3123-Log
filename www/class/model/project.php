@@ -97,8 +97,11 @@
         $query = 'project_id = ?';
         $mng = R::count('manage', $query ,[$this->bean->id]);
         $notes = R::count('note', $query, [$this->bean->id]);
-        $hours = R::findOne('note', $query ,[$this->bean->id])->minutes/$INTOHOURS;
-        return $mng + $notes + $hours;
+        if ($notes != 0) {
+            $hours = R::findOne('note', $query ,[$this->bean->id])->minutes/$INTOHOURS;
+            return $mng + $notes + $hours;
+        }
+        return $mng + $notes;
     }
 
 /**

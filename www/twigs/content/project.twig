@@ -29,14 +29,16 @@
 
 
 {% block header %}
-    <div class="d-flex w-100 justify-content-between">
-        <article>
-            <h1 class="text-center">{{projectName}}</h1>
-        </article>
-
-        <a class="text-white bg-danger border-primary rounded m-0 p-3" href="{{deletePrj}}">
+    <a class="text-white bg-danger border-primary rounded m-0 p-3" href="{{deletePrj}}">
             <i class="fas fa-trash-alt"></i> delete
-        </a>
+    </a>
+    <div class="d-flex w-100 justify-content-center">
+        <article class="p-2">
+            <form>
+                <input class="form-control form-control-lg w-80"  type="text" placeholder="{{projectName}}" value="{{projectName}}">
+                <input class="form-control mt-2" type="text" placeholder="{{projectSummary}}" value="{{projectSummary}}">
+            </form>
+        </article>
     </div>
 {% endblock header %}
 

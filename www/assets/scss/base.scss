@@ -29,15 +29,15 @@
             }
         }
         .borderCards {
-            direction: ltr;
             overflow: scroll;
+            position: relative;
             max-height: 25rem;
             padding: 0;
             .mycards {
                 width: 17rem;
                 max-height: 25rem;
                 position: relative;
-                direction: ltr;
+                overflow: auto;
             }
         }
         @include bar;
