@@ -25,7 +25,7 @@
  * @param string    $projectid  The name of the project id
  */
 
-        function addNote(Context $context, bool $new = FALSE, string $title = '', string $summary = '', int $time = 0, string $myfile = '', string $projectid = '')
+        function addNote(Context $context, bool $new = FALSE, string $title = '', string $summary = '', int $time = 0, string $myfile = '', string $projectid = '') : void
         {
             $note = R::dispense('note');
             $note->addEdit($context, $new, $title , $summary, $time, $myfile , $projectid );
@@ -98,6 +98,8 @@
         }
 /**
  * Will return if the user is admin or not
+ * @param context   $context    Denotes the context
+ * @return bool                 Indicates is user is admin or not
  */
         function isAdmin(Context $context) : bool 
         {
@@ -128,8 +130,9 @@
 
 /**
  * This would take care of deleting the bean
+ * @return void
  */
-        function delete() 
+        function delete() : void
         {
             $context = Context::getinstance();
             $numAdmins = R::count('manage', 'admin = ? AND project_id = ?', [TRUE, $this->bean->id] );
@@ -145,8 +148,7 @@
                 R::trashAll($trash);
             }
             
-        }
-
+        } 
     }
 
 

@@ -23,11 +23,14 @@
             <i class="fas fa-trash-alt"></i> delete
     </a>
     <div class="d-flex w-100 justify-content-center">
-        <article class="p-2">
+        <article class="p-2 d-flex justify-content-center">
             <form>
-                <input class="form-control form-control-lg w-80"  type="text" placeholder="{{projectName}}" value="{{projectName}}">
-                <input class="form-control mt-2" type="text" placeholder="{{projectSummary}}" value="{{projectSummary}}">
+                <input id="updateT" class="form-control form-control-lg w-80" onkeyup="project(/title/this.value)" type="text" placeholder="{{projectName}}">
+                <input id="updateS" class="form-control mt-2" type="text" onkeyup="project(/summary/this.value)" placeholder="{{projectSummary}}">
             </form>
+            <aside class="spinner-border text-success m-2" id="state" role="status">
+                    <span class="sr-only">Loading...</span>
+            </aside>
         </article>
     </div>
 {% endblock header %}
@@ -36,6 +39,7 @@
 
     {% include '@util/message.twig' %}
     {% import '@util/formmacro.twig' as f %}
+
     <ul class="nav nav-tabs">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#notes">Notes</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#users">Users</a></li>
@@ -109,30 +113,7 @@
                         </svg>
                         Add user
                 </button>
-            <ul class="users mt-3 mr-0">
-                {% for user in users %}
-                    <li class="list-group-item list-group-item-action"> 
-                        <div class="d-flex w-100 justify-content-between">
-                            <a href="{{base}}/profile/{{user.id}}">
-                                <i class="far fa-user"></i> 
-                                {{user.login}} 
-                            </a> 
-                            <span class="custom-control p-2 custom-switch ml-2">
-                                {% if user.admin %}
-                                    <input type="checkbox" checked='True' id="{{user.id}}" class="custom-control-input">
-                                {% else %}
-                                    <input type="checkbox" id="{{user.id}}" class="custom-control-input">
-                                {% endif %}
-                                <label class="custom-control-label" for="{{user.id}}"> Admin </label>
-                            </span>
-                                <a href="{{currentUser}}/delete/{{user.id}}">
-                                <i class="fas fa-trash-alt"></i>
-                                <small> delete </small>
-                            </a>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
+            <ul class="users mt-3 mr-0" id="user"></ul>
         </article>
     </section>
 {% endblock main %}

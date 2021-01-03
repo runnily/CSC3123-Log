@@ -49,7 +49,7 @@
         {
             $context = $this->context;
             $project = $context->rest()[1];
-            $users = R::getAll('SELECT user.login, user.id, manage.admin FROM user, manage WHERE user.id = manage.u_id AND manage.project_id = :project_id',
+            $users = \R::getAll('SELECT user.login, user.id, manage.admin FROM user, manage WHERE user.id = manage.u_id AND manage.project_id = :project_id',
                     [':project_id' => "{$project}"]
                 );
             $context->web()->sendJSON($users);
