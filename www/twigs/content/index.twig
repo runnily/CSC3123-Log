@@ -5,10 +5,7 @@
         bootbox.alert('Hi there, This shows projects which have the most contributions. Select projects on the side bar to create a new project')
     })
 {% endblock onload %}
-
-{% block scripts %}
-    
-{% endblock scripts %}
+}
 
 {% block header %}
     <article class="col-md-12">
@@ -18,12 +15,17 @@
 
 
 {% block main %}
+    <!-- Allows user to add a new project -->
     <a class="text-white bg-secondary border-primary rounded p-3" href="{{base}}/create/">
             <i class="fas fa-plus"></i>
             New project
     </a>
+    
+    <!-- This section contains the main information about the page: contributions and the amount of projects-->
     <section class="row mt-5">
+        <!-- This shows a bar chart of the amount of contributions on a project -->
         <article class="col-md-8">
+            <!-- Only displays this section of cass 'row' if user is logged in -->
             {% if context.hasUser %}
             {% include '@util/message.twig' %}
                 <div>
@@ -40,7 +42,11 @@
                     <a id="alert"><i class="far fa-question-circle"></i></a>
                 </aside>
                 <hr>
+
+                <!-- This would list out the list of project the user has within their folder-->
+                <!-- The project is viewed within a 'card' used with bootsrtap templates -->
                 <div class='mt-5 d-flex flex-row borderCards' >
+                    <!-- This would go through the projects to list them out-->
                     {% for name, prj in projects2 %}
                         <div class="card mycards mr-4">
                             <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
@@ -72,6 +78,7 @@
                     {% endfor %}
                 </div>
             {% else %}
+            <!-- When user is not logged in it displays this below: -->
             <div class="jumbotron">
                 <a href="{{base}}/login">Login</a> to get started!
             </div>
