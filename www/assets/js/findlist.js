@@ -47,18 +47,6 @@ function users(xttp) {
         html += '<i class="far fa-user"></i> ';
         html += userJson.login;
         html += '</a>';
-        html += '<div class="custom-control p-2 custom-switch ml-2">';
-
-        if (userJson.admin == true) {
-            var stringfunc = '/adjax/admin/' + userJson.admin + '/project/' + PROJECTID + '/user/' + userJson.id + '/, admin';
-            stringfunc = `'${stringfunc}'`
-            html += '<input type="checkbox" checked="True" id="' + userJson.id + '" class="custom-control-input" onchange="hash="sha256-lfINeMOxdfy8I70IOV14S4oCJB1quxpmPKDUjb9qi+M=" loadDoc(' + stringfunc + ') ">';
-        } else {
-            html += '<input type="checkbox" id="' + userJson.id + '" class="custom-control-input checks">';
-        }
-
-        html += '<label class="custom-control-label" for="' + userJson.id + '"> Admin </label>';
-        html += '</div>'
         html += '<a href="/project/' + PROJECTID + '/user/' + '/delete/' + userJson.id + '">';
         html += '<i class="fas fa-trash-alt"></i>';
         html += '<small> delete </small>';
@@ -69,17 +57,7 @@ function users(xttp) {
     document.getElementById("user").innerHTML = html;
 }
 
-var bool = 0;
 
-function admin(xxtp) {
-    for (var checkbox in document.getElementsByClassName('checks')) {
-        if (checkbox.checked == true) {
-            bool = 1;
-        } else {
-            bool = 0;
-        }
-    }
-}
 
 function project(url) {
     var xhttp = new XMLHttpRequest();
@@ -98,6 +76,3 @@ loadDoc("/ajax/find/user/" + PROJECTID + "/", users);
 
 document.getElementById("updateT").onkeyup = function() { project('/title/' + document.getElementById("updateT").value) };
 document.getElementById("updateS").onkeyup = function() { project('/summary/' + document.getElementById("updateS").value) };
-
-var elements = document.getElementsByClassName('custom-control-input');
-console.log(elements.length);
