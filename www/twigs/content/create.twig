@@ -1,8 +1,5 @@
 {% extends '@content/page.twig' %}
 
-{% block meta %}
-{# <meta> for things like keywords etc.#}
-{% endblock meta %}
 
 {% block header %}
     <article class="col-md-12">
@@ -11,6 +8,7 @@
 {% endblock header %}
 
 {% block main %}
+    <!-- A form used to allow the user to create a page -->
     <section class="row">
         <article class="ml-auto col-md-8 mr-auto">
             {% include '@util/message.twig' %}
