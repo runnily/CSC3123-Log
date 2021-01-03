@@ -11,7 +11,7 @@
     use \Framework\Local;
 
 /**
- * This is used to get the notes
+ * This is used to get update project name and title
  */
     class InsertProject extends \Framework\Ajax\Ajax
     {
@@ -51,22 +51,28 @@
             $context = $this->context;
             $rest = $context->rest();
             $prj = \R::load('project', $rest[1]);
-            echo $prj->pname;
             $update = $rest[3];
 
-            // doesnt work when name is the same
-            
-            if ($rest[2] == 'title')
+            if ($prj && strlen($update) > 0 && trim($update) != '')
             {
-                $prj->pname = $update;
-                \R::store($prj);
-            } 
-            if ($rest[2] == 'summary')
-            {
-                $prj->summary = $update;
-                \R::store($prj);
+                if ($rest[2] == 'title')
+                {
+                    $dup = \R::getAll('SELECT project.pname FROM project, user, manage WHERE project.id = manage.project_id AND user.id = manage.u_id AND project.pname = :pname',
+                        [':pname' => "{$prj->pname}"] // checking for duplicates
+                    ); 
+                    
+                    if (!$dup) 
+                    {
+                        $prj->pname = $update;
+                        \R::store($prj);
+                    }
+                } 
+                if ($rest[2] == 'summary')
+                {
+                    $prj->summary = $update;
+                    \R::store($prj);
+                }
             }
-
         }
     }
 ?>

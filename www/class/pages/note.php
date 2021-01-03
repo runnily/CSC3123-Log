@@ -37,6 +37,8 @@
 
             $uploads = R::find('upload', 'note_id = ?', [$nid]);
             $context->local()->addval('uploads', $uploads); 
+            $context->local()->addval('noteid', $nid);
+            $context->local()->addval('projectid', $pid);
 
             $context->local()->addval("download", "/note/{$nid}/project/{$pid}/download");
             $context->local()->addval("delete", "/note/{$nid}/project/{$pid}/delete");
@@ -55,6 +57,7 @@
                 $context->local()->message(Local::ERROR, 'Something went wrong!' );
             }   
             R::store($note);
+            
             if (count($rest) == 5)
             {
                 $uid = $rest[4];

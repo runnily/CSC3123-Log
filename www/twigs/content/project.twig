@@ -6,16 +6,8 @@
 {% endblock meta %}
 
 {% block scripts %}
-<script src="{{assets}}/js/findNote.js"></script>
+<script src="{{assets}}/js/findlist.js"></script>
 {% endblock scripts %}
-
-{% block setup %}
-{# Any javascript you need that is NOT run on load goes in this block. ***NB you don't need <script></script> tags here*** #}
-{% endblock setup %}
-
-{% block onload %}
-{# Any javascript you need that MUST run on load goes in this block. ***NB you don't need <script></script> tags here*** #}
-{% endblock onload %}
 
 
 {% block header %}
@@ -105,15 +97,18 @@
             </button>
             <ul data-project="{{projectid}}" class="mt-3 mr-0" id='note'> </ul>     
         </article>
+
         <article id="users" class="col-md-8 tab-pane fade">
             <br/>
-                <button type="button" class="text-white btn bg-secondary" data-toggle="modal" data-target="#add-user"> 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                        </svg>
-                        Add user
-                </button>
+            <button type="button" class="text-white btn bg-secondary" data-toggle="modal" data-target="#add-user"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                    Add user
+            </button>
             <ul class="users mt-3 mr-0" id="user"></ul>
+
+
         </article>
     </section>
 {% endblock main %}

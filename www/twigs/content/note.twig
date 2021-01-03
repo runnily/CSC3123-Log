@@ -10,7 +10,7 @@
 
 
 {% block scripts %}
-{# <script src=""></script> for any other JS files you need #}
+<script src="{{assets}}/js/filelist.js"></script>
 {% endblock scripts %}
 
 {% block setup %}
@@ -18,7 +18,7 @@
 {% endblock setup %}
 
 {% block header %}
-    <article class="col-md-12">
+    <article class="col-md-12" id="noteid"  data-project="{{projectid}}" data-note="{{noteid}}">
         <h1 class="text-center">Edit {{action}}</h1>
         <h2 class="text-center">{{note.title}}</h2>
     </article>
@@ -34,29 +34,7 @@
             {{f.text({label: 'Title', id: 'title', name: 'title', ph: note.title })}}
             {{f.text({label: 'Summary', id: 'summary', name: 'summary', ph: note.summary })}}
             <h5> Your files </h5>
-            <ul class="list-group">
-            {% for upload in uploads %}
-                {% set type = upload.filename|split('.') %}
-                {% set type = type[type|length - 1] %}
-                <li class="list-group-item">
-                    {% if type in ['png', 'gif', 'tiff', 'jpg'] %}
-                        <i class="far fa-image"></i>
-                    {% elseif type in ['doc', 'docx'] %}
-                        <i class="far fa-file-word"></i>
-                    {% elseif type == 'pdf' %} 
-                        <i class="far fa-file-pdf"></i>
-                    {% else %}
-                        <i class="far fa-file"></i>
-                    {% endif %}
-                    <a href="{{download}}/{{upload.id}}">
-                        {{upload.filename}}
-                    </a>
-                    <a href="{{delete}}/{{upload.id}}">
-                        <small> delete </small>
-                    <a>
-                </li>
-            {% endfor %}
-            </ul>
+            <ul class="list-group" id='upload'></ul>
             <br>
             {{f.file({id: 'f0', name: 'myfile', label: 'Upload more files'})}}
             {{f.number({min: '1', name: 'time', label: 'Time spent (minutes)', ph: note.minutes})}}
