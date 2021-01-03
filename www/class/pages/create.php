@@ -2,8 +2,8 @@
 /**
  * A class that contains code to handle any requests for  /create/
  *
- * @author Your Name <Your@email.org>
- * @copyright year You
+ * @author Adanna Obibuaku <b8025187@newcastle.ac.uk>
+ * @copyright 2020 Adanna
  * @package Framework
  * @subpackage UserPages
  */
@@ -27,21 +27,25 @@
  */
         public function handle(Context $context)
         {
-            $formd = $context->formdata('post');
+            $formd = $context->formdata('post'); // get name
             $context->local()->message(Local::ERROR, R::find('project'));
            
+            // if we have a title for the project
             if ($formd->exists('pname')) 
             {
                 $name = $formd->fetch('pname', '', FALSE);
+
+                // test name is valid
                 if (isset($name) || trim($name) !== '')
                 {
                     $prj = R::dispense('project');
                     $dup = R::getAll('SELECT project.pname FROM project, user, manage WHERE project.id = manage.project_id AND user.id = manage.u_id AND project.pname = :pname',
                         [':pname' => "{$name}"]
-                    ); 
+                    ); // check if there is already a duplicate
                     
+                    // when there is no duplicates
                     if (!$dup) 
-                    { // if empty
+                    { 
                         $prj->pname = $name;
                         $prj->summary = $formd->fetch('summary', '', FALSE);
 

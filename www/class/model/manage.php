@@ -2,8 +2,8 @@
 /**
  * A model class for the RedBean object manage
  *
- * @author Adanna Obibuaku 
- * @copyright 2020 Newcastle University
+ * @author Adanna Obibuaku <b8025187@newcastle.ac.uk>
+ * @copyright 2020 Adanna
  * @package Framework
  * @subpackage SystemModel
  */
@@ -15,12 +15,13 @@
     class Manage extends \RedBeanPHP\SimpleModel {
 
 /**
- * This is used to get managed projects
+ * This is used to get managed project with its assiocated number of users, number of notes and ids
  * The context id
- * @param Context   @context needs to take in context
- * @array           @returns an array
+ * @param Context    $context needs to take in context
+ * @return  array    $returns an array
  */
-        function getProjects(Context $context) {
+        function getProjects(Context $context) 
+        {
             $mng = R::find('manage', 'u_id=?', [$context->user()->id]);
             $prj = [];
             foreach ($mng as $m) 
@@ -47,6 +48,5 @@
             return $prj;
         }
 
-
-
     }
+?>

@@ -33,7 +33,8 @@
                 $mng =  R::find('manage', 'u_id = ?', [$context->user()->id]);
                 $prj = [];
                 $userNotesTotal = 0;
-                foreach($mng as $m) {
+                foreach ($mng as $m) 
+                {
                     $p = R::load('project', $m->project_id);
                     $prj[$p->pname] = $p->contributions();
                     $userNotesTotal += $p->contributions();

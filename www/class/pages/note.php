@@ -2,8 +2,8 @@
 /**
  * A class that contains code to handle any requests for  /note/
  *
- * @author Your Name <Your@email.org>
- * @copyright year You
+ * @author Adanna Obibuaku <b8025187@newcastle.ac.uk>
+ * @copyright 2020 Adanna
  * @package Framework
  * @subpackage UserPages
  */
@@ -29,9 +29,11 @@
         public function handle(Context $context)
         {   
             $rest = $context->rest();
+            // get the project id and note id
             $pid = $rest[2];
             $nid = $rest[0];
 
+            // finding and add values associate with this node for the twig
             $note = R::findOne('note', 'project_id = ? AND id = ?', [$pid, $nid]);
             $context->local()->addval('note', $note); 
 
@@ -40,12 +42,11 @@
             $context->local()->addval('noteid', $nid);
             $context->local()->addval('projectid', $pid);
 
-            $context->local()->addval("download", "/note/{$nid}/project/{$pid}/download");
-            $context->local()->addval("delete", "/note/{$nid}/project/{$pid}/delete");
-            
             // This updates the note
             $fdp = $context->formdata('post');
             $note = R::load('note', $nid);
+            
+            // allows user to edit their note
             try {
                 
                 if ($note->addEdit($context, FALSE, $fdp->fetch('title', '', FALSE), $fdp->fetch('summary', '', FALSE), (int) $fdp->fetch('time', '0', FALSE), 'myfile'))
@@ -57,19 +58,25 @@
                 $context->local()->message(Local::ERROR, 'Something went wrong!' );
             }   
             R::store($note);
+            // then store note once done
             
+            // Allows user to download a file assiocated with note
             if (count($rest) == 5)
             {
-                $uid = $rest[4];
+                $uid = $rest[4];  // The upload id
                 $upl = R::load("upload", $uid);
-                if ($rest[3] == 'download') 
+
+                if ($upl) // when upload exists
                 {
-                    $upl->downloaded($context);
-                }
-                if ($rest[3] == 'delete') 
-                {
-                    R::trash($upl);
-                    $context->local()->message(Local::MESSAGE, 'File Deleted!' );
+                    if ($rest[3] == 'download') 
+                    {
+                        $upl->downloaded($context);
+                    }
+                    if ($rest[3] == 'delete') 
+                    {
+                        R::trash($upl);
+                        $context->local()->message(Local::MESSAGE, 'File Deleted!' );
+                    }
                 }
             }
             return '@content/note.twig';

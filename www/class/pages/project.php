@@ -2,8 +2,8 @@
 /**
  * A class that contains code to handle any requests for  /project/
  *
- * @author Adanna
- * @copyright 2020
+ * @author Adanna Obibuaku <b8025187@newcastle.ac.uk>
+ * @copyright 2020 Adanna
  * @package Framework
  * @subpackage UserPages
  */

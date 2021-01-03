@@ -2,8 +2,8 @@
 /**
  * A class that contains code to handle any requests for  /profile/
  *
- * @author Your Name <Your@email.org>
- * @copyright year You
+ * @author Adanna Obibuaku <b8025187@newcastle.ac.uk>
+ * @copyright 2020 Adanna
  * @package Framework
  * @subpackage UserPages
  */
@@ -24,7 +24,8 @@
  */
         public function handle(Context $context)
         {
-            if ($context->hasUser()) {
+            if ($context->hasUser()) 
+            {   
                 $context->local()->addval('login', $context->user()->login );
                 $context->local()->addval('email', $context->user()->email );
             }

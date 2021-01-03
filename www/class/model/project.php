@@ -2,8 +2,8 @@
 /**
  * A model class for the RedBean object project
  *
- * @author Adanna Obibuaku 
- * @copyright 2015-2020 Newcastle University
+ * @author Adanna Obibuaku <b8025187@newcastle.ac.uk>
+ * @copyright 2020 Adanna
  * @package Framework
  * @subpackage SystemModel
  */
@@ -150,7 +150,4 @@
             
         } 
     }
-
-
-    
 ?>

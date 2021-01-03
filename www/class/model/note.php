@@ -2,8 +2,8 @@
 /**
  * A model class for the RedBean object note
  *
- * @author Adanna Obibuaku 
- * @copyright 2020 Newcastle University
+ * @author Adanna Obibuaku <b8025187@newcastle.ac.uk>
+ * @copyright 2020 Adanna
  * @package Framework
  * @subpackage SystemModel
  */
@@ -15,7 +15,7 @@
     class Note extends \RedBeanPHP\SimpleModel {
 
 /**
- * This is used for handling or updating a note.
+ * This is used for creating or updating a note.
  * 
  * @param Context   $context    The context of the object
  * @param bool      $new        If this is a new node a node being updated
@@ -84,8 +84,9 @@
 /**
  * This is to ensure when a node is directly calls the delete method in uploads to delete
  * all the files assoicated with it, on the directory.
+ * @return void
  */
-        function delete()
+        function delete() : void
         {
             $trash = R::find('upload', 'note_id = ?', [$this->bean->id]);
             if ($trash) {
