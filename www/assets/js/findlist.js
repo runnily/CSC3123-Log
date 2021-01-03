@@ -67,6 +67,7 @@ function project(url) {
         }
     };
     xhttp.open("POST", "/ajax/insertproject/" + PROJECTID + url, true);
+    console.log("/ajax/insertproject/" + PROJECTID + url);
     document.getElementById("state").style.visibility = "visible"
     xhttp.send();
 }
