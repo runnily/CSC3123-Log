@@ -1,30 +1,5 @@
 {% extends '@content/page.twig' %}
 
-{% block meta %}
-{# <meta> for things like keywords etc.#}
-{% endblock meta %}
-
-{% block type %}
-{# <link> for webfonts #}
-{% endblock type %}
-
-{% block css %}
-{# <link> for any other CSS files you need #}
-{% endblock css %}
-
-{% block scripts %}
-{# <script src=""></script> for any other JS files you need #}
-{% endblock scripts %}
-
-{% block setup %}
-{# Any javascript you need that is NOT run on load goes in this block. ***NB you don't need <script></script> tags here*** #}
-{% endblock setup %}
-
-{% block onload %}
-{# Any javascript you need that MUST run on load goes in this block. ***NB you don't need <script></script> tags here*** #}
-{% endblock onload %}
-
-
 {% block header %}
     <article class="col-md-12">
         <h1 class="text-center">Profile</h1>
@@ -32,6 +7,7 @@
 {% endblock header %}
 
 {% block main %}
+    <!-- This section is to show the users information -->
     <section class="row">
         {% if context.hasUser %}
             <article class="ml-auto col-md-8 mr-auto">
