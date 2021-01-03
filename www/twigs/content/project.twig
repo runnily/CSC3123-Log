@@ -6,7 +6,7 @@
 {% endblock meta %}
 
 {% block scripts %}
-{# <script src=""></script> for any other JS files you need #}
+<script src="{{assets}}/js/findNote.js"></script>
 {% endblock scripts %}
 
 {% block setup %}
@@ -33,6 +33,7 @@
 {% endblock header %}
 
 {% block main %}
+
     {% include '@util/message.twig' %}
     {% import '@util/formmacro.twig' as f %}
     <ul class="nav nav-tabs">
@@ -90,7 +91,7 @@
     </div>
 
     <section class="tab-content">
-        <div id="notes" class="col-md-8 tab-pane fade show active">
+        <article id="notes" class="col-md-8 tab-pane fade show active">
             <br/>
             <button type="button" class="text-white btn bg-secondary " data-toggle="modal" data-target="#add-note"> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
@@ -98,25 +99,8 @@
                 </svg>
                 New note
             </button>
-        
-            <ul class="notes mt-3 mr-0">
-                {% for note in notes %}
-                    <li class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <a href="{{base}}/note/{{note.id}}/project/{{project_id}}" >
-                                <i class="far fa-sticky-note"></i>
-                                {{note.title}}
-                            </a> 
-                            <a href="{{currentNote}}/delete/{{note.id}}">
-                                <i class="fas fa-trash-alt"></i>
-                                <small> delete </small>
-                            </a>
-                        </div>
-                        <p class="mb-1">{{note.summary}}</p>  
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+            <ul data-project="{{projectid}}" class="mt-3 mr-0" id='note'> </ul>     
+        </article>
         <article id="users" class="col-md-8 tab-pane fade">
             <br/>
                 <button type="button" class="text-white btn bg-secondary" data-toggle="modal" data-target="#add-user"> 

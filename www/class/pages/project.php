@@ -126,6 +126,8 @@ trait notesAndUsers {
         public function handle(Context $context)
         {
             $project = $context->rest()[0];
+            $context->local()->addval("projectid", $project); 
+
             $prj = R::findOne('project', 'id = ?', [$project] );
             if ($prj) 
             { 
