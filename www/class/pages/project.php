@@ -47,7 +47,7 @@ trait notesAndUsers {
     {
         if ( count($context->rest()) == 4 && $context->rest()[2] == 'delete' && $context->rest()[1] == 'note') 
             {
-            $trash = R::findOne('note', 'project_id = ? AND id = ?', [ $context->rest()[0], $context->rest()[3] ] );
+            $trash = R::load('note', $context->rest()[3] );
             if ($trash) 
             {
                 R::trash($trash);
@@ -136,37 +136,14 @@ trait notesAndUsers {
  */
         public function handle(Context $context)
         {
-            $project = $context->rest()[0];
-            $context->local()->addval("projectid", $project); 
+            $project = $context->rest()[0]; 
 
-            $prj = R::findOne('project', 'id = ?', [$project] );
+            $prj = R::load('project', $project);
             if ($prj) // if we have a project 
             { 
                 // passing values to twig to show the project information
-                $context->local()->addval('projectName', $prj->pname);
-                $context->local()->addval('projectSummary', $prj->summary); 
+                $context->local()->addval('sproject', $prj);
                 $context->local()->addval("exits", 1); 
-                $notes = R::find('note', 'project_id = ?', [$project] );
-                $context->local()->addval("deletePrj", "/project/{$project}/delete"); 
-
-                if ($notes) // if we have a note
-                {
-                    // passing values to twig to show note information
-                    $context->local()->addval("notes", $notes); 
-                    $context->local()->addval("currentNote", "/project/{$project}/note"); 
-                }
-                
-                $users = R::getAll('SELECT user.login, user.id, manage.admin FROM user, manage WHERE user.id = manage.u_id AND manage.project_id = :project_id',
-                    [':project_id' => "{$project}"]
-                ); // get all users names and ids assoicated with the project
-
-                if ($users) // if we have users
-                {
-                    // pass the values if we have a list of users
-                    $context->local()->addval("users", $users); 
-                    $context->local()->addval("currentUser", "/project/{$project}/user");
-                }
-                $context->local()->addval('project_id', $project); 
 
                 try {
                     // try performing these action

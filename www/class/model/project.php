@@ -71,9 +71,15 @@
         {
             // ensures there is more than 1 user and they are admin
             // admin can only delete user
+
+           //  count($this->bean->ownManage);
+
             if (R::count('manage', 'project_id = ?', [$this->bean->id]) > 1 && $this->isAdmin(Context::getinstance()))
             {
                 $numAdmins = R::count('manage', 'admin = ? AND project_id = ?', [TRUE, $this->bean->id] );
+
+                // $this->bean->withCondition('admin', TRUE)->ownManage;
+
                 $trash = R::findOne('manage', 'project_id = ? AND u_id = ?', [ $project_id, $user_id]);
 
                 if ($trash) { // if user exists (is managing this current project)
@@ -118,14 +124,13 @@
     function contributions() : float
     {   
         $INTOHOURS = 60;
-        $query = 'project_id = ?';
-        $mng = R::count('manage', $query ,[$this->bean->id]);
-        $notes = R::count('note', $query, [$this->bean->id]);
-        if ($notes != 0) {
-            $hours = R::findOne('note', $query ,[$this->bean->id])->minutes/$INTOHOURS;
-            return $mng + $notes + $hours;
+        $notes = $this->bean->ownNote;
+        $mng = count($this->bean->ownManage);
+        $hours = 0;
+        foreach ($notes as $note){
+            $hours = $note->minutes/$INTOHOURS;
         }
-        return $mng + $notes;
+        return round($mng + count($notes) + $hours, 1);
     }
 
 /**

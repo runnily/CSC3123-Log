@@ -8,7 +8,10 @@
     <!--This is the header ID -->
 
     <!-- article tag holds a data-project for the java script-->
-    <article class="col-md-12" id="noteid"  data-project="{{projectid}}" data-note="{{noteid}}">
+
+    <!-- Context rest[0] is the note id -->
+    <!-- Context rest[2] is the project id -->
+    <article class="col-md-12" id="noteid"  data-project="{{context.rest[2]}}" data-note="{{context.rest[0]}}">
         <h1 class="text-center">Edit {{action}}</h1>
         <h2 class="text-center">{{note.title}}</h2>
     </article>

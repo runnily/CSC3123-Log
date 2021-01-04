@@ -52,11 +52,12 @@
             $type = $context->rest()[1];
             if ($type == 'upload') 
             {
-                $beans = \R::find($type, 'note_id = ?', [$id]);
+                $beans = \R::load('note', $id)->ownUpload;
+                
 
             } else if ($type == 'note')
             {
-                $beans = \R::find($type, 'project_id = ?', [$id]);
+                $beans = \R::load('project', $id)->ownNote;
 
             } else if ($type == 'user') 
             {

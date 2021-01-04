@@ -88,7 +88,7 @@
  */
         function delete() : void
         {
-            $trash = R::find('upload', 'note_id = ?', [$this->bean->id]);
+            $trash = $this->bean->ownUpload;
             if ($trash) {
                 R::trashAll($trash);
             }

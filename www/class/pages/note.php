@@ -30,22 +30,14 @@
         {   
             $rest = $context->rest();
             // get the project id and note id
-            $pid = $rest[2];
             $nid = $rest[0];
 
             // finding and add values associate with this node for the twig
-            $note = R::findOne('note', 'project_id = ? AND id = ?', [$pid, $nid]);
+            $note = R::load('note', $nid);
             $context->local()->addval('note', $note); 
-
-            $uploads = R::find('upload', 'note_id = ?', [$nid]);
-            $context->local()->addval('uploads', $uploads); 
-            $context->local()->addval('noteid', $nid);
-            $context->local()->addval('projectid', $pid);
 
             // This updates the note
             $fdp = $context->formdata('post');
-            $note = R::load('note', $nid);
-            
             // allows user to edit their note
             try {
                 

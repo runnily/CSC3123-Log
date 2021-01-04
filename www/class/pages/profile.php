@@ -24,11 +24,6 @@
  */
         public function handle(Context $context)
         {
-            if ($context->hasUser()) 
-            {   
-                $context->local()->addval('login', $context->user()->login );
-                $context->local()->addval('email', $context->user()->email );
-            }
             return '@content/profile.twig';
         }
     }

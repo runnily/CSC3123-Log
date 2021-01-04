@@ -12,8 +12,8 @@
         {% if context.hasUser %}
             <article class="ml-auto col-md-8 mr-auto">
             <p><i class="fas fa-user fa-10x"></i></p>
-            <p class="mt-5"> <span class=".text-muted font-weight-bold"> Username: </span> {{login}} </p>
-            <p> <span class=".text-muted font-weight-bold"> Email: </span> {{email}} </p>
+            <p class="mt-5"> <span class=".text-muted font-weight-bold"> Username: </span> {{context.user.login}} </p>
+            <p> <span class=".text-muted font-weight-bold"> Email: </span> {{context.user.email}} </p>
             </article>
         {% endif %}
     </section>

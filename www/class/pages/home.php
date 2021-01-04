@@ -29,7 +29,7 @@
         public function handle(Context $context)
         {
             if ($context->hasUser())
-            {
+            {   
                 $mng =  R::find('manage', 'u_id = ?', [$context->user()->id]);
                 $prj = [];
                 $userNotesTotal = 0;

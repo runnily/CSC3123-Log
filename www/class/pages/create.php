@@ -28,10 +28,11 @@
         public function handle(Context $context)
         {
             $formd = $context->formdata('post'); // get name
-           
+
             // if we have a title for the project
             if ($formd->exists('pname')) 
             {
+
                 $name = $formd->fetch('pname', '', FALSE);
 
                 // test name is valid
