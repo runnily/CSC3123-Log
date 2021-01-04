@@ -14,7 +14,6 @@
             {% include '@util/message.twig' %}
             <form action="{{base}}/create" method='post' class="fclass">
                 <div class="form-group">
-                    <input type="hidden" id="username" name="username" value={{user.id}}>
                     <label for="pname"> Project Name </label>
                     <input type="text" id="pname" class="form-control" name="pname" required="required" placeholder="{{user.login}} Enter your project name">
                     <br>

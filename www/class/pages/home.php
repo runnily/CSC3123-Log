@@ -30,8 +30,10 @@
         {
             if ($context->hasUser())
             {   
+             
                 $mng =  R::find('manage', 'u_id = ?', [$context->user()->id]);
                 $prj = [];
+                //$context->local()->message(local::MESSAGE, R::find('note'));
                 $userNotesTotal = 0;
                 foreach ($mng as $m) 
                 {

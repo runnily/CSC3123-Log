@@ -76,10 +76,8 @@
 
             if (R::count('manage', 'project_id = ?', [$this->bean->id]) > 1 && $this->isAdmin(Context::getinstance()))
             {
-                $numAdmins = R::count('manage', 'admin = ? AND project_id = ?', [TRUE, $this->bean->id] );
-
-                // $this->bean->withCondition('admin', TRUE)->ownManage;
-
+                $numAdmins = count($this->bean->withCondition('admin = ?', [TRUE])->ownManage);
+            
                 $trash = R::findOne('manage', 'project_id = ? AND u_id = ?', [ $project_id, $user_id]);
 
                 if ($trash) { // if user exists (is managing this current project)
@@ -109,7 +107,8 @@
  */
         function isAdmin(Context $context) : bool 
         {
-            if (R::count('manage', 'project_id = ?', [$this->bean->id]) <= 0)
+            
+            if (count($this->bean->ownMange) <= 0)
             {
                 return TRUE; // If no one is managing it then it can be changed by anyone
             }
@@ -147,7 +146,7 @@
                 throw new \Framework\Exception\Forbidden('User is not admin!');
             }
         
-            $trash = R::find('note', 'project_id = ?', [$this->bean->id]);
+            $trash = $this->bean->ownNote;
             if ($trash) 
             {
                 R::trashAll($trash);
