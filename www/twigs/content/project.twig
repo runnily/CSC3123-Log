@@ -27,7 +27,7 @@
     {% import '@util/formmacro.twig' as f %}
 
     <!-- A tab to display users and notes-->
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" id="projectid" data-project="{{projectid}}">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#notes">Notes</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#users">Users</a></li>
     </ul>
@@ -85,29 +85,29 @@
 
     <!-- This is the second which will define the content within the inial nav tab we made-->
     <section class="tab-content">
-        <!-- Define tab for notes -->
-        <article id="notes" class="col-md-8 tab-pane fade show active">
+    <!-- Macron to define both tabs -->
+     {% macro list(singleton, plural) %}
+        {% if singleton == 'note' %}
+            <article id="{{plural}}" class="col-md-8 tab-pane fade show active">
+        {% else %}
+            <article id="{{plural}}" class="col-md-8 tab-pane fade">
+        {% endif %}
             <br/>
-            <h2>Notes</h2>
+            <h2>{{plural}}</h2>
             <br/>
-            <button type="button" class="text-white btn bg-secondary " data-toggle="modal" data-target="#add-note"> 
+            <button type="button" class="text-white btn bg-secondary " data-toggle="modal" data-target="#add-{{singleton}}"> 
                 <i class="fas fa-plus"></i>
-                New note
+                New {{singleton}}
             </button>
-            <ul data-project="{{projectid}}" class="mt-3 mr-0" id='note'> </ul>     
+            <ul data-project="{{projectid}}" class="mt-3 mr-0" id='{{singleton}}'> </ul>     
         </article>
+        {% endmacro list %}
 
-        <!-- Define tab for head -->
-        <article id="users" class="col-md-8 tab-pane fade">
-            <br/>
-            <h2>Users</h2>
-            <br/>
-            <button type="button" class="text-white btn bg-secondary" data-toggle="modal" data-target="#add-user"> 
-                    <i class="fas fa-plus"></i>
-                    Add user
-            </button>
-            <ul class="users mt-3 mr-0" id="user"></ul>
-        </article>
+        <!-- This would list the tabs of project -->
+        {{ _self.list('note', 'notes') }}
+        {{ _self.list('user','users') }}
+        
+
     </section>
 
 {% endblock main %}

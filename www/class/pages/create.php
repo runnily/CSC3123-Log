@@ -28,7 +28,6 @@
         public function handle(Context $context)
         {
             $formd = $context->formdata('post'); // get name
-            $context->local()->message(Local::ERROR, R::find('project'));
            
             // if we have a title for the project
             if ($formd->exists('pname')) 

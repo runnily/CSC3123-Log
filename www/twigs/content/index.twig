@@ -71,7 +71,19 @@
                                 <p class="card-text">{{prj.summary}}</p>
                                 <hr>
                                 <a href="{{base}}/project/{{prj.id}}">
-                                    <small> <i class="far fa-sticky-note"></i> {{prj.notes}} notes | <i class="far fa-user"></i> {{prj.users}} users</small> 
+                                    <small> <i class="far fa-sticky-note"></i> 
+                                        {% if prj.notes > 1 %}
+                                            {{prj.notes}} notes 
+                                        {% else %}
+                                            1 note
+                                        {% endif %}
+                                        | <i class="far fa-user"></i>
+                                        {% if (prj.users > 1) %}
+                                            {{prj.users}} users
+                                        {% else %}
+                                            1 user
+                                        {% endif %}
+                                    </small> 
                                 </a>
                             </div>
                         </div>

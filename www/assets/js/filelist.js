@@ -1,6 +1,21 @@
+/**
+ * filelist module
+ * @module js/filelist
+ * @description This module is used by twig note 
+ * @author Adanna Obibuaku
+ * @copyright 2020 Adanna
+ */
+
+
 var NOTEID = document.getElementById('noteid').getAttribute('data-note');
 var PROJECTID = document.getElementById('noteid').getAttribute('data-project');
 
+
+/**
+ * This function uses adjax to allow users to view
+ * the files they have synchronously
+ * @returns {void}
+ */
 function uploads() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
