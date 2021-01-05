@@ -22,13 +22,13 @@ body section .main {
   margin: 0;
   margin-left: 1%;
   padding: 3%;
-  width: 100%;
+  width: 100vw;
   min-height: 80vh;
 }
 body .borderCards {
   overflow: scroll;
   position: relative;
-  max-height: 25rem;
+  height: 25rem;
   padding: 0;
 }
 body .borderCards .mycards {
