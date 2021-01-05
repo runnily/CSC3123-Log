@@ -142,7 +142,9 @@
             {
                 throw new \Framework\Exception\Forbidden('User is not admin!');
             }
-        
+            
+            R::trashAll($this->bean->ownManage);
+            
             $trash = $this->bean->ownNote;
             if ($trash) 
             {

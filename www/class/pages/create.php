@@ -29,8 +29,9 @@
         {
             $formd = $context->formdata('post'); // get name
           
-            $context->local()->message(Local::MESSAGE, R::find('project'));
             $context->local()->message(Local::MESSAGE, $context->user()->ownManage);
+           
+        
             // if we have a title for the project
             if ($formd->exists('pname')) 
             {
@@ -52,15 +53,18 @@
                         $prj->summary = $formd->fetch('summary', '', FALSE);
 
                         $mng = R::dispense('manage');
+                        //$usr = R::dispense('user');
                         // manages has a list of users managing many list of projects
                         // if a user is deleted then manage is not deleted as they may have other people searching the project
-                        $mng->user = $context->user();
-                        $context->user()->noLoad()->ownManage[] = $mng; 
-                        $prj->noLoad()->xownManage[]= $mng;
 
+                        $usr = $context->user();
+                        $usr->noLoad()->ownManage[] = $mng;
+                        $prj->noLoad()->xownManage[]= $mng;
                         $mng->admin = TRUE;
+
                         R::store($mng);
                         R::store($prj);
+                        R::store($usr);
                         $context->local()->message(Local::MESSAGE, "{$name} Project created!");
                         $context->divert("/");
                     } else 

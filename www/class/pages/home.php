@@ -31,11 +31,12 @@
             if ($context->hasUser())
             {   
                 $prj = [];
-                $mng = $context->user()->ownManage;
+         
+                $mng = R::find('manage', 'user_id = ?', [$context->user()->id]);
+
                 $userNotesTotal = 0;
                 foreach ($mng as $m) 
                 {
-                    $m = $m->fresh();
                     $p = R::load('project', $m->project_id);
                     $prj[$p->pname] = $p->contributions();
                     $userNotesTotal += $p->contributions();
