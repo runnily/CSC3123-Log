@@ -33,7 +33,7 @@
             $nid = $rest[0];
 
             // finding and add values associate with this node for the twig
-            $note = R::load('note', $nid);
+            $note = $context->load('note', $nid);
             $context->local()->addval('note', $note); 
 
             // This updates the note
@@ -56,7 +56,7 @@
             if (count($rest) == 5)
             {
                 $uid = $rest[4];  // The upload id
-                $upl = R::load("upload", $uid);
+                $upl = $context->load("upload", $uid);
 
                 if ($upl) // when upload exists
                 {

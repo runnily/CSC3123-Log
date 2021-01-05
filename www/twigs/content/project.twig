@@ -5,15 +5,15 @@
 {% endblock scripts %}
 
 {% block header %} 
-    <!-- The header tag-->
+    
     <a class="text-white bg-danger border-primary rounded m-0 p-3" href="{{base}}/project/{{sproject.id}}/delete">
             <i class="fas fa-trash-alt"></i> delete
     </a>
     <div class="d-flex w-100 justify-content-center">
         <article class="p-2 d-flex justify-content-center">
             <form>
-                <input id="updateT" class="form-control form-control-lg w-80" onkeyup="project(/title/this.value)" type="text" placeholder="{{sproject.pname}}">
-                <input id="updateS" class="form-control mt-2" type="text" onkeyup="project(/summary/this.value)" placeholder="{{sproject.summary}}">
+                <input id="updateT" class="form-control form-control-lg w-80"  type="text" placeholder="{{sproject.pname}}">
+                <input id="updateS" class="form-control mt-2" type="text" placeholder="{{sproject.summary}}">
             </form>
             <aside class="spinner-border text-success m-2" id="state" role="status">
                     <span class="sr-only">Loading...</span>

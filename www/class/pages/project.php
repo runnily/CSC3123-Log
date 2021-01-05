@@ -47,7 +47,7 @@ trait notesAndUsers {
     {
         if ( count($context->rest()) == 4 && $context->rest()[2] == 'delete' && $context->rest()[1] == 'note') 
             {
-            $trash = R::load('note', $context->rest()[3] );
+            $trash = $context->load('note', $context->rest()[3] );
             if ($trash) 
             {
                 R::trash($trash);
@@ -110,8 +110,8 @@ trait notesAndUsers {
             if ( count($context->rest()) == 2 && $context->rest()[1] == 'delete')
             {
                 R::trash($prj);
-                $context->divert("/");
                 $context->local()->message(local::MESSAGE, "Project deleted");
+                $context->divert("/");
             }
         } catch (\Exception $e) 
         {
@@ -137,29 +137,35 @@ trait notesAndUsers {
         public function handle(Context $context)
         {
             $project = $context->rest()[0]; 
+            $prj = $context->load('project', $project);
 
-            $prj = R::load('project', $project);
             if ($prj) // if we have a project 
             { 
-                // passing values to twig to show the project information
-                $context->local()->addval('sproject', $prj);
-                $context->local()->addval("exits", 1); 
-
-                try {
-                    // try performing these action
-                    $this->addUser($context, $prj);
-                    $this->removeNote($context);
-                    $this->addNote($context, $prj);
-                    $this->removeUser($context, $prj);
-                    $this->removePrj($context, $prj);
-                } catch (\Exception $e) 
+                $user = $context->user();
+                if ($user->withCondition('project_id = ?', [$prj->id])->ownManage)
                 {
-                    // else catch the exception and display a message
-                    $context->local()->message(local::MESSAGE, "Something went wrong!");
+                    // passing values to twig to show the project information
+                    $context->local()->addval('sproject', $prj);
+                    $context->local()->addval("exits", 1); 
+
+                    try {
+                        // try performing these action
+                        $this->addUser($context, $prj);
+                        $this->removeNote($context);
+                        $this->addNote($context, $prj);
+                        $this->removeUser($context, $prj);
+                        $this->removePrj($context, $prj);
+                    } catch (\Exception $e) 
+                    {
+                        // else catch the exception and display a message
+                        $context->local()->message(local::ERROR, "Something went wrong!");
+                    }
+                
                 }
             }
 
-            return '@content/project.twig';
+        return '@content/project.twig';
+
         }
-    }
+}
 ?>

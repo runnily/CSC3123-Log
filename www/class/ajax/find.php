@@ -38,7 +38,7 @@
  */
         public function requires()
         {
-            return [FALSE, [/* [contextname/rolename],... */]]; // does not require login, no contextname/rolename checks
+            return [TRUE, []]; // requires login
         }
 /**
  * Carry out SAMPLE operation

@@ -39,7 +39,7 @@
  */
         public function requires()
         {
-            return [FALSE, [/* [contextname/rolename],... */]]; // does not require login, no contextname/rolename checks
+            return [TRUE, []]; // requires login
         }
 /**
  * This is used to update the project name and summary with the user typing

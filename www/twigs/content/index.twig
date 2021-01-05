@@ -24,7 +24,8 @@
     <!-- This section contains the main information about the page: contributions and the amount of projects-->
     <section class="row mt-5">
         <!-- This shows a bar chart of the amount of contributions on a project -->
-        <article class="col-md-8">
+        <article class="col-md-10">
+        <h2> Project contributions </h2>
             <!-- Only displays this section of cass 'row' if user is logged in -->
             {% if context.hasUser %}
             {% include '@util/message.twig' %}
@@ -45,10 +46,11 @@
 
                 <!-- This would list out the list of project the user has within their folder-->
                 <!-- The project is viewed within a 'card' used with bootsrtap templates -->
-                <div class='mt-5 d-flex flex-row borderCards' >
+                <h3> Your projects </h3>
+                <div class='d-flex flex-wrap borderCards' >
                     <!-- This would go through the projects to list them out-->
                     {% for name, prj in projects2 %}
-                        <div class="card mycards mr-4">
+                        <div class="card mycards m-2">
                             <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     {% set active = 1 %}

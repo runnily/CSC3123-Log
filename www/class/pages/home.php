@@ -28,6 +28,7 @@
  */
         public function handle(Context $context)
         {
+            //R::exec('SET FOREIGN_KEY_CHECKS=0; DROP TABLE project; SET FOREIGN_KEY_CHECKS=1;'); 
             if ($context->hasUser())
             {   
                 $prj = [];

@@ -80,7 +80,7 @@
  */
         }
 /**
- * By deleting a user we need to do some clean ups
+ * By deleting a user we need to do some clean up an project that is not assiociated with a user
  */
         public function delete() : void
         {
