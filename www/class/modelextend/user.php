@@ -79,5 +79,24 @@
  * @todo Validate the joined field. Correct date, not in the future
  */
         }
+/**
+ * By deleting a user we need to do some clean ups
+ */
+        public function delete() : void
+        {
+            // looping through all projects which user is admin in
+            foreach ($this->bean->withCondition('admin = ?', [TRUE])->ownManage as $mng)
+            {
+                // find that specfic project
+                $prj = \R::load('project', $mng->project_id);
+                
+                // get the number of admins for that specific project 
+                $numAdmins = count($prj->withCondition('admin = ?', [TRUE])->ownManage);
+                if ($numAdmins <= 1) // if number of admin is less than one delete manages.
+                {
+                    \R::trash($prj);
+                }
+            }
+        }
     }
 ?>

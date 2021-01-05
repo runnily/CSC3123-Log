@@ -28,18 +28,20 @@
         public function handle(Context $context)
         {
             $formd = $context->formdata('post'); // get name
-
+          
+            $context->local()->message(Local::MESSAGE, R::find('project'));
+            $context->local()->message(Local::MESSAGE, $context->user()->ownManage);
             // if we have a title for the project
             if ($formd->exists('pname')) 
             {
 
                 $name = $formd->fetch('pname', '', FALSE);
-
+                
                 // test name is valid
                 if (isset($name) || trim($name) !== '')
                 {
                     $prj = R::dispense('project');
-                    $dup = R::getAll('SELECT project.pname FROM project, user, manage WHERE project.id = manage.project_id AND user.id = manage.u_id AND project.pname = :pname',
+                    $dup = R::getAll('SELECT project.pname FROM project, user, manage WHERE project.id = manage.project_id AND user.id = manage.user_id AND project.pname = :pname',
                         [':pname' => "{$name}"]
                     ); // check if there is already a duplicate
                     
@@ -51,7 +53,9 @@
 
                         $mng = R::dispense('manage');
                         // manages has a list of users managing many list of projects
-                        $mng->noLoad()->u = $context->user();
+                        // if a user is deleted then manage is not deleted as they may have other people searching the project
+                        $mng->user = $context->user();
+                        $context->user()->noLoad()->ownManage[] = $mng; 
                         $prj->noLoad()->xownManage[]= $mng;
 
                         $mng->admin = TRUE;

@@ -42,13 +42,13 @@
             $prs = R::findOne('user', 'login = ?', [$username] ); // finds user exits in database
             if ($prs) 
             { // checking if user exits
-                $dup =  R::getAll('SELECT user.login FROM user, manage WHERE user.id = manage.u_id AND manage.project_id = :project_id AND user.login = :user_login',
+                $dup =  R::getAll('SELECT user.login FROM user, manage WHERE user.id = manage.user_id AND manage.project_id = :project_id AND user.login = :user_login',
                 [':project_id' => "{$this->id}", ':user_login' => "{$username}"]
                 ); 
                 if (!$dup) 
                 { // if user is not already managing project
                     $mng = R::dispense('manage');
-                    $mng->u_id = $prs->id;
+                    $mng->user_id = $prs->id; //
                     $mng->admin = $admin;
                     $mng->project = $this;
                     R::store($mng);
@@ -72,13 +72,11 @@
             // ensures there is more than 1 user and they are admin
             // admin can only delete user
 
-           //  count($this->bean->ownManage);
-
             if (R::count('manage', 'project_id = ?', [$this->bean->id]) > 1 && $this->isAdmin(Context::getinstance()))
             {
                 $numAdmins = count($this->bean->withCondition('admin = ?', [TRUE])->ownManage);
             
-                $trash = R::findOne('manage', 'project_id = ? AND u_id = ?', [ $project_id, $user_id]);
+                $trash = R::findOne('manage', 'project_id = ? AND user_id = ?', [ $project_id, $user_id]);
 
                 if ($trash) { // if user exists (is managing this current project)
                     
@@ -112,7 +110,7 @@
             {
                 return TRUE; // If no one is managing it then it can be changed by anyone
             }
-            $mng = R::findOne('manage', 'project_id = ? AND u_id = ?', [$this->bean->id, $context->user()->id]);
+            $mng = R::findOne('manage', 'project_id = ? AND user_id = ?', [$this->bean->id, $context->user()->id]);
             return $mng->admin;
         }
 

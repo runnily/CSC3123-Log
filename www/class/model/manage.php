@@ -22,7 +22,7 @@
  */
         function getProjects(Context $context) 
         {
-            $mng = R::find('manage', 'u_id=?', [$context->user()->id]);
+            $mng = $context->user()->ownManage;
             $prj = [];
             foreach ($mng as $m) 
             {

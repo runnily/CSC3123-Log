@@ -42,60 +42,60 @@
                     <a id="alert"><i class="far fa-question-circle"></i></a>
                 </aside>
                 <hr>
-         </article>
-            <!-- This would list out the list of project the user has within their folder-->
-            <!-- The project is viewed within a 'card' used with bootsrtap templates -->
-            <div class='mt-5 d-flex flex-wrap borderCards' >
-                <!-- This would go through the projects to list them out-->
-                {% for name, prj in projects2 %}
-                    <div class="card mycards m-3">
-                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner">
-                                {% set active = 1 %}
-                                {% for img in prj.uploads %} <!-- loops through images in project -->
-                                        {% if active == 1%}
-                                            <div class="carousel-item active">
-                                                <img class="d-block w-100 a" src="{{img['fname']}}" alt="{{img['filename']}}">
-                                            </div>
-                                        {% else %}
-                                            <div class="carousel-item">
+
+                <!-- This would list out the list of project the user has within their folder-->
+                <!-- The project is viewed within a 'card' used with bootsrtap templates -->
+                <div class='mt-5 d-flex flex-row borderCards' >
+                    <!-- This would go through the projects to list them out-->
+                    {% for name, prj in projects2 %}
+                        <div class="card mycards mr-4">
+                            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% set active = 1 %}
+                                    {% for img in prj.uploads %}
+                                            {% if active == 1%}
+                                                <div class="carousel-item active">
                                                     <img class="d-block w-100 a" src="{{img['fname']}}" alt="{{img['filename']}}">
-                                            </div>
+                                                </div>
+                                            {% else %}
+                                                <div class="carousel-item">
+                                                        <img class="d-block w-100 a" src="{{img['fname']}}" alt="{{img['filename']}}">
+                                                </div>
+                                            {% endif %}
+                                            {% set active = 0 %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{{base}}/project/{{prj.id}}">{{name}}</a></h5>
+                                <p class="card-text">{{prj.summary}}</p>
+                                <hr>
+                                <a href="{{base}}/project/{{prj.id}}">
+                                    <small> <i class="far fa-sticky-note"></i> 
+                                        {% if prj.notes > 1 %}
+                                            {{prj.notes}} notes 
+                                        {% else %}
+                                            1 note
                                         {% endif %}
-                                        {% set active = 0 %}
-                                {% endfor %}
+                                        | <i class="far fa-user"></i>
+                                        {% if (prj.users > 1) %}
+                                            {{prj.users}} users
+                                        {% else %}
+                                            1 user
+                                        {% endif %}
+                                    </small> 
+                                </a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="{{base}}/project/{{prj.id}}">{{name}}</a></h5>
-                            <p class="card-text">{{prj.summary}}</p>
-                            <hr>
-                            <a href="{{base}}/project/{{prj.id}}">
-                                <small> <i class="far fa-sticky-note"></i> 
-                                    {% if prj.notes > 1 %}
-                                        {{prj.notes}} notes 
-                                    {% else %}
-                                        1 note
-                                    {% endif %}
-                                    | <i class="far fa-user"></i>
-                                    {% if (prj.users > 1) %}
-                                        {{prj.users}} users
-                                    {% else %}
-                                        1 user
-                                    {% endif %}
-                                </small> 
-                            </a>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
+            {% else %}
+            <!-- When user is not logged in it displays this below:-->
+            <div class="jumbotron">
+                <a href="{{base}}/login">Login</a> to get started!
             </div>
-        {% else %}
-        <!-- When user is not logged in it displays this below:-->
-        <div class="jumbotron">
-            <a href="{{base}}/login">Login</a> to get started!
-        </div>
-        {% endif %}
-       
+            {% endif %}
+        </article>
     </section>
 
 {% endblock main %}

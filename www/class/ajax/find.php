@@ -61,7 +61,7 @@
 
             } else if ($type == 'user') 
             {
-                $beans = \R::getAll('SELECT user.login, user.id, manage.admin FROM user, manage WHERE user.id = manage.u_id AND manage.project_id = :project_id',
+                $beans = \R::getAll('SELECT user.login, user.id, manage.admin FROM user, manage WHERE user.id = manage.user_id AND manage.project_id = :project_id',
                     [':project_id' => "{$id}"]
                 );
 
