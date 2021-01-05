@@ -29,7 +29,7 @@
         {
             $formd = $context->formdata('post'); // get name
           
-            $context->local()->message(Local::MESSAGE, $context->user()->ownManage);
+            $context->local()->message(Local::MESSAGE, R::find('manage'));
            
         
             // if we have a title for the project
