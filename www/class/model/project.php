@@ -71,7 +71,6 @@
         {
             // ensures there is more than 1 user and they are admin
             // admin can only delete user
-
             if (R::count('manage', 'project_id = ?', [$this->bean->id]) > 1 && $this->isAdmin(Context::getinstance()))
             {
                 $numAdmins = count($this->bean->withCondition('admin = ?', [TRUE])->ownManage);
