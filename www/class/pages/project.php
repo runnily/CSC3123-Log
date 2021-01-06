@@ -111,7 +111,6 @@ trait notesAndUsers {
             {
                 R::trash($prj);
                 $context->local()->message(local::MESSAGE, "Project deleted");
-                $context->divert("/");
             }
         } catch (\Exception $e) 
         {

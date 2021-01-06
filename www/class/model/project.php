@@ -105,7 +105,7 @@
         function isAdmin(Context $context) : bool 
         {
             
-            if (count($this->bean->ownMange) <= 0)
+            if (count($this->bean->ownManage) <= 0)
             {
                 return TRUE; // If no one is managing it then it can be changed by anyone
             }
@@ -136,7 +136,7 @@
         function delete() : void
         {
             $context = Context::getinstance();
-            $numAdmins = R::count('manage', 'admin = ? AND project_id = ?', [TRUE, $this->bean->id] );
+            $numAdmins = count($this->bean->withCondition('admin = ?', [TRUE])->ownManage);
 
             if (!($this->bean->isAdmin($context)) && $numAdmins > 0) 
             {
