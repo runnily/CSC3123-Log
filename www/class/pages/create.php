@@ -77,7 +77,8 @@
                     $context->local()->message(Local::ERROR, "Please insert a name!");
                 }
             }
-            //$this->setCache();
+            
+            $this->setCache($context);
             return '@content/create.twig';
         }
     }
