@@ -24,12 +24,12 @@ trait notesAndUsers {
     function addNote(Context $context, $prj) : void
     {
         $formp = $context->formdata('post');
-        $title = $formp->fetch('title', '', FALSE);
+        $title = htmlspecialchars($formp->fetch('title', '', FALSE));
         if ($formp->exists('title'))
         {
             if ( trim($title) !== '') 
             {
-                $summary = $formp->fetch('summary', '', FALSE);
+                $summary = htmlspecialchars($formp->fetch('summary', '', FALSE));
                 $time = (int) $formp->fetch('time', '0', FALSE);
                 $prj->addNote($context, TRUE, $title, $summary, $time, 'myfile', $context->rest()[0]);
                 $context->local()->message(local::MESSAGE, "Note added!");
@@ -144,9 +144,10 @@ trait notesAndUsers {
                 $user = $context->user();
                 if ($user->withCondition('project_id = ?', [$prj->id])->ownManage)
                 {
+                    
                     // passing values to twig to show the project information
                     $context->local()->addval('sproject', $prj);
-                    $context->local()->addval("exits", 1); 
+                    $context->local()->addval("exists", 1); 
 
                     try {
                         // try performing these action

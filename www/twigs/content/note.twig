@@ -13,32 +13,37 @@
     <!-- Context rest[2] is the project id -->
     <article class="col-md-12" id="noteid"  data-project="{{context.rest[2]}}" data-note="{{context.rest[0]}}">
         <h1 class="text-center">Edit {{action}}</h1>
-        <h2 class="text-center">{{note.title}}</h2>
     </article>
 {% endblock header %}
 
 {% block main %}
-    {% include '@util/message.twig' %}
-    <!-- Form for filling out the node -->
     <section class="row">
-        <article class="ml-auto col-md-8 mr-auto">
-        <div class="modal-body">
-        {% import '@util/formmacro.twig' as f %}
-        {{f.startform({method: 'post', multi: TRUE})}}
-            {{f.text({label: 'Title', id: 'title', name: 'title', ph: note.title })}}
-            {{f.text({label: 'Summary', id: 'summary', name: 'summary', ph: note.summary })}}
-            <h5> Your files </h5>
-            <ul class="list-group" id='upload'></ul>
-            <br>
-            {{f.file({id: 'f0', name: 'myfile', label: 'Upload more files'})}}
-            {{f.number({min: '1', name: 'time', label: 'Time spent (minutes)', ph: note.minutes})}}
-            <div class="modal-footer">
-                <a href="{{base}}/projects"><button type="button" class="btn btn-primary">back</button></a>
-                <button onclick="location.href='http://www.example.com'" type="button">
-                {{f.submit({value: 'Save changes'})}}
-            </div>
-        {{f.endform()}}
-        </article>
-    </section>
+    <!-- The if statement ensures does not have access to a note that does not belong to user -->
+    {% if exists %}
+        {% include '@util/message.twig' %}
+        <!-- Form for filling out the node -->
+            <article class="ml-auto col-md-8 mr-auto">
+            <h2 class="text-center">{{note.title}}</h2>
+            <div class="modal-body">
+            {% import '@util/formmacro.twig' as f %}
+            {{f.startform({method: 'post', multi: TRUE})}}
+                {{f.text({label: 'Title', id: 'title', name: 'title', ph: note.title })}}
+                {{f.text({label: 'Summary', id: 'summary', name: 'summary', ph: note.summary })}}
+                <h5> Your files </h5>
+                <ul class="list-group" id='upload'></ul>
+                <br>
+                {{f.file({id: 'f0', name: 'myfile', label: 'Upload more files'})}}
+                {{f.number({min: '1', name: 'time', label: 'Time spent (minutes)', ph: note.minutes})}}
+                <div class="modal-footer">
+                    <a href="{{base}}/project/{{project}}"><button type="button" class="btn btn-primary">back</button></a>
+                    {{f.submit({value: 'Save changes'})}}
+                </div>
+            {{f.endform()}}
+            </article>
+    {% else %}
+        <h2 class="text-center">Note not found</h2> <!-- The message say note not found -->
+    {% endif %}
+     </section>
 {% endblock main %}
+
 

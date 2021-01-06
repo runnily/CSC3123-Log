@@ -29,23 +29,25 @@
         public function handle(Context $context)
         {   
             $rest = $context->rest();
-            // get the project id and note id
             $nid = $rest[0];
+
             //  loading the note
             $note = $context->load('note', $nid);
             if ($note)
             {
                 $user = $context->user();
-                if ($user->withCondition('project_id = ?', [$note->project_id])->ownManage)
+                if ($user->withCondition('project_id = ?', [$note->project_id])->ownManage) // if users owns the project
                 {
                     $context->local()->addval('note', $note); 
+                    $context->local()->addval('project', $note->project_id); 
+                    $context->local()->addval("exists", 1); 
 
                     // This updates the note
                     $fdp = $context->formdata('post');
                     // allows user to edit their note
                     try {
                         
-                        if ($note->addEdit($context, FALSE, $fdp->fetch('title', '', FALSE), $fdp->fetch('summary', '', FALSE), (int) $fdp->fetch('time', '0', FALSE), 'myfile'))
+                        if ($note->addEdit($context, FALSE, htmlspecialchars($fdp->fetch('title', '', FALSE)), htmlspecialchars($fdp->fetch('summary', '', FALSE)), (int) $fdp->fetch('time', '0', FALSE), 'myfile'))
                         {
                             $context->local()->message(Local::MESSAGE, 'Note Updated!' );
                         }

@@ -51,7 +51,7 @@
             $context = $this->context;
             $rest = $context->rest();
             $prj = \R::load('project', $rest[1]);
-            $update = $rest[3];
+            $update = htmlspecialchars($rest[3]);
 
             if ($prj && strlen($update) > 0 && trim($update) != '')
             {
